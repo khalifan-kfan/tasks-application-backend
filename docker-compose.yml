@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+  tasks-app:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tasks-app
+    environment:
+      PYTHONDONTWRITEBYTECODE: 1
+      PYTHONUNBUFFERED: 1
+      MONGO_URI: ${MONGO_URI:-mongodb://tasks-app:password@tasks-mongo-db:27017/admin}
+      TEST_MONGO_URI: ${TEST_MONGO_URI:-mongodb://tasks-app:password@tasks-mongo-db:27017/admin}
+    ports:
+      - "${APP_PORT:-8000}:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - tasks-mongo-db
+    links:
+      - tasks-mongo-db
+
+  tasks-mongo-db:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: tasks-app
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGODB_DATA_DIR: /data/db
+    ports:
+      - "${MONGO_PORT:-27011}:27017"
+    volumes:
+      - tasks-mongo-data:/data/db
+
+  
+volumes:
+  tasks-mongo-data:
