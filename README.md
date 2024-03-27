@@ -21,6 +21,11 @@ git clone https://github.com/khalifan-kfan/tasks-application-backend.git
 - In the project directory, running `make` shows you a list of commands to use.
 - Run `make start` to start the application and required services.
 - Run `make connect-to-container` to connect to the FastAPI application container.
+- Run `make stop` to stop the application and required services.
+- Run `make test` to test the application
+
+After you run the application, checkout
+`` http://localhost:8000/docs`  `` to see the API documentation.
 
 ### Available services
 
