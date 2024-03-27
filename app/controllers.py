@@ -24,9 +24,6 @@ def add_task(data: dict = {}):
 
 def get_tasks(title: str, description: str, author: str,
               before: str, after: str, page: int = 1, limit: int = 10) -> List[dict]:
-    print('settings.MONGO_URI')
-    print(settings.MONGO_URI)
-    print('settings.MONGO_URI')
     try:
         filters = {}
         all_filters = []
@@ -61,7 +58,21 @@ def get_tasks(title: str, description: str, author: str,
 
         serialized_results = json.loads(json_util.dumps(results))
 
-        return serialized_results
+        total_count = get_collection().count_documents(filters)
+
+        total_pages = (total_count + limit - 1) // limit
+
+        pagination = {
+            "total_count": total_count,
+            "total_pages": total_pages,
+            "current_page": page,
+            "limit": limit
+        }
+
+        return {
+            "data": serialized_results,
+            "pagination": pagination
+        }
 
     except Exception as e:
         print(e)
