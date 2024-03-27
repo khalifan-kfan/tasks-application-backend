@@ -26,7 +26,7 @@ def test_add_task_missing_fields(test_client):
     assert response.status_code == 422
 
 
-def test_get_activities(test_client):
+def test_get_tasks(test_client):
     response = test_client.get("/api/tasks")
     assert response.status_code == 200
 

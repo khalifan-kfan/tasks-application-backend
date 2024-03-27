@@ -9,12 +9,13 @@ Follow these steps to have a local running copy of the app.
 ### Clone The Repo
 
 ```bash
-git clone git_url
+git clone https://github.com/khalifan-kfan/tasks-application-backend.git
 ```
 
 ### Running application with Docker
 
 ---
+
 `make` is a build automation tool that is used to manage the build process of a software project.
 
 - In the project directory, running `make` shows you a list of commands to use.
