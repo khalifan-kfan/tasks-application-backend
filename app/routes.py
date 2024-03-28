@@ -27,14 +27,18 @@ def get_tasks(
         author: Optional[str] = Query(None, description="Author"),
         before: Optional[str] = Query(
             None, description="before deadline"),
-        after: Optional[str] = Query(None, description="after deadline")):
+        after: Optional[str] = Query(None, description="after deadline"),
+        page: Optional[int] = Query(1, description="current page"),
+        limit: Optional[int] = Query(
+            10, description="total number of items per page"),
+):
 
     return controllers.get_tasks(
         title=title,
         description=description,
         author=author,
         before=before,
-        after=after)
+        after=after, page=page, limit=limit)
 
 
 @router.get("/tasks/{task_id}", response_model=Task)
