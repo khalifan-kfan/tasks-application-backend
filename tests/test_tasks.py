@@ -10,6 +10,9 @@ import datetime
 task_data = {"title": "testTitle", "creation_date": datetime.datetime.now().isoformat(),
              "author": "testAuthor", "description": "testDescription", "deadline": datetime.datetime.now().isoformat()}
 
+invalid_task_data_type = {"title": 34, "creation_date": datetime.datetime.now().isoformat(),
+                          "author": "testAuthor", "description": "testDescription", "deadline": datetime.datetime.now().isoformat()}
+
 
 def test_index(test_client):
     response = test_client.get("/api/")
@@ -23,6 +26,11 @@ def test_add_task_missing_fields(test_client):
     invalid_task_data = {key: value for key,
                          value in task_data.items() if key != "title"}
     response = test_client.post("/api/tasks", json=invalid_task_data)
+    assert response.status_code == 422
+
+
+def test_add_task_invalid_fields(test_client):
+    response = test_client.post("/api/tasks", json=invalid_task_data_type)
     assert response.status_code == 422
 
 

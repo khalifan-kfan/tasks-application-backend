@@ -29,7 +29,7 @@ build-testing-image: ## Build docker image
 
 test:build-testing-image ## Run tests
 	@ ${INFO} "Running tests"
-	@ docker compose -f $(DOCKER_DEV_COMPOSE_FILE) exec tasks-app poetry run pytest -x -vv --cov=. --cov-report=term-missing
+	@ docker compose -f $(DOCKER_DEV_COMPOSE_FILE) exec tasks-app poetry run pytest  --cov=. --cov-report=term-missing
 	@ docker compose -f $(DOCKER_DEV_COMPOSE_FILE) stop tasks-app tasks-mongo-db 
 
 stop:  ## Stop and remove all containers
