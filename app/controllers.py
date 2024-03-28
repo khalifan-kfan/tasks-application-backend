@@ -28,11 +28,12 @@ def get_tasks(title: str, description: str, author: str,
         filters = {}
         all_filters = []
         if title:
-            all_filters.append({"title": title})
+            all_filters.append({"title": {"$regex": title, "$options": "i"}})
         if description:
-            all_filters.append({"description": description})
+            all_filters.append(
+                {"description": {"$regex": description, "$options": "i"}})
         if author:
-            all_filters.append({"auther": author})
+            all_filters.append({"author": {"$regex": author, "$options": "i"}})
 
         if after:
             all_filters.append({
