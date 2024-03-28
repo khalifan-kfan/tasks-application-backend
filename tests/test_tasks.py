@@ -59,3 +59,18 @@ def test_update_task_by_id(test_client):
     retrieve_response = test_client.patch(
         f"/api/tasks/{added_task_id}", json={"title": "updatedTitle"})
     assert retrieve_response.status_code == 200
+
+
+def test_update_task_by_wrong_id(test_client):
+    retrieve_response = test_client.patch(
+        f"/api/tasks/83944839438394", json={"title": "updatedTitle"})
+    assert retrieve_response.status_code == 500
+
+
+def test_update_task_by_invalid_id(test_client):
+    add_response = test_client.post("/api/tasks", json=task_data)
+    assert add_response.status_code == 200
+    added_task_id = add_response.json()["task_id"]
+    retrieve_response = test_client.patch(
+        f"/api/tasks/{added_task_id}", json={"title": 422})
+    assert retrieve_response.status_code == 422
