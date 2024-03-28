@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Body
 
 import app.controllers as controllers
-from app.model import Task
+from app.model import Task, TaskUpdate
 from fastapi import Query
-from typing import Optional
+from typing import Optional, Union
 
 
 router = APIRouter()
@@ -40,3 +40,9 @@ def get_tasks(
 @router.get("/tasks/{task_id}", response_model=Task)
 def get_task(task_id: str) -> Task:
     return controllers.get_single_task(task_id)
+
+
+@router.patch("/tasks/{task_id}", response_model=dict)
+def get_task(task_id: str, data: TaskUpdate = Body(...)):
+    # print(data)
+    return controllers.update_task(task_id=task_id, task_update=data)

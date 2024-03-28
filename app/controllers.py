@@ -1,12 +1,12 @@
 from typing import List
 from fastapi import HTTPException
 from app.database import get_collection
-from app.model import Task
+from app.model import Task, TaskUpdate
 from bson import json_util
 from bson.objectid import ObjectId
 import json
 from config import settings
-
+from fastapi.responses import JSONResponse
 from datetime import datetime
 
 
@@ -87,6 +87,31 @@ def get_single_task(task_id: str):
             raise HTTPException(status_code=404, detail={
                                 "message": "Task not found or does not exist"})
         return task
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500, detail={
+                            "message": "Internal server error"})
+
+
+def update_task(task_id: str, task_update: dict = {}):
+    print(task_update.dict())
+    try:
+        updated_task_dict = task_update.dict(exclude_unset=True)
+
+        updated_task_dict = {k: v for k,
+                             v in updated_task_dict.items() if v is not None}
+
+        updated_task = get_collection().find_one_and_update(
+            {"_id": ObjectId(task_id)},
+            {"$set": updated_task_dict},
+            return_document=True
+        )
+        if updated_task:
+            updated_task['_id'] = str(updated_task['_id'])
+            updated_task['deadline'] = updated_task['deadline'].isoformat(
+            ) if updated_task.get('deadline') else None
+            return JSONResponse(content=updated_task)
+        return None
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail={

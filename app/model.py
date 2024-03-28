@@ -17,8 +17,8 @@ class TasksGetResponse(BaseModel):
     id: str
 
 
-class TasksFilters(BaseModel):
-    title: Optional[str] = Query(None, description="title")
-    description: Optional[str] = Query(None, description="description")
-    author: Optional[str] = Query(None, description="author")
-    deadline: Optional[str] = Query(None, description="deadline")
+class TaskUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    author: Optional[str] = None
+    deadline: Optional[datetime.datetime] = None

@@ -42,3 +42,12 @@ def test_get_task_by_id(test_client):
     added_task_id = add_response.json()["task_id"]
     retrieve_response = test_client.get(f"/api/tasks/{added_task_id}")
     assert retrieve_response.status_code == 200
+
+
+def test_update_task_by_id(test_client):
+    add_response = test_client.post("/api/tasks", json=task_data)
+    assert add_response.status_code == 200
+    added_task_id = add_response.json()["task_id"]
+    retrieve_response = test_client.patch(
+        f"/api/tasks/{added_task_id}", json={"title": "updatedTitle"})
+    assert retrieve_response.status_code == 200
